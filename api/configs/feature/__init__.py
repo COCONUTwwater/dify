@@ -559,6 +559,18 @@ class AuthConfig(BaseSettings):
         description="Google OAuth client secret",
         default=None,
     )
+    # ----extend_start---- 飞书单点登录对应app
+
+    FEISHU_CLIENT_ID: Optional[str] = Field(
+        description="Feishu OAuth client ID",
+        default=None,
+    )
+
+    FEISHU_CLIENT_SECRET: Optional[str] = Field(
+        description="Feishu OAuth client secret",
+        default=None,
+    )
+    # ----extend_end----
 
     ACCESS_TOKEN_EXPIRE_MINUTES: PositiveInt = Field(
         description="Expiration time for access tokens in minutes",
@@ -837,11 +849,11 @@ class LoginConfig(BaseSettings):
     )
     ENABLE_EMAIL_PASSWORD_LOGIN: bool = Field(
         description="whether to enable email password login",
-        default=True,
+        default=False, # extend 隐藏邮箱登录
     )
     ENABLE_SOCIAL_OAUTH_LOGIN: bool = Field(
         description="whether to enable github/google oauth login",
-        default=False,
+        default=True, # extend 开启Oauth单点登录
     )
     EMAIL_CODE_LOGIN_TOKEN_EXPIRY_MINUTES: PositiveInt = Field(
         description="expiry time in minutes for email code login token",

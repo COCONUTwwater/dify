@@ -586,6 +586,23 @@ class AccountService:
 
         return False
 
+    @classmethod
+    def create_account_by_oauth(cls, email: str, name: str, oauth_id: str, provider: str):
+        from extensions.ext_database import db
+        from models.account import Account
+        account = Account(
+            email=email,
+            name=name or email,
+            password=None,
+            password_salt=None,
+            status=1,
+            oauth_id=oauth_id,
+            oauth_provider=provider
+        )
+        db.session.add(account)
+        db.session.commit()
+        return account
+
 
 class TenantService:
     @staticmethod

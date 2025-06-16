@@ -14,7 +14,7 @@ from constants.languages import languages
 from events.tenant_event import tenant_was_created
 from extensions.ext_database import db
 from libs.helper import extract_remote_ip
-from libs.oauth import GitHubOAuth, GoogleOAuth, OAuthUserInfo
+from libs.oauth import FeishuOAuth, GitHubOAuth, GoogleOAuth, OAuthUserInfo  # extend FeishuOAuth
 from models import Account
 from models.account import AccountStatus
 from services.account_service import AccountService, RegisterService, TenantService
@@ -43,8 +43,19 @@ def get_oauth_providers():
                 client_secret=dify_config.GOOGLE_CLIENT_SECRET,
                 redirect_uri=dify_config.CONSOLE_API_URL + "/console/api/oauth/authorize/google",
             )
+        # ----extend_start----
+        if not dify_config.FEISHU_CLIENT_ID or not dify_config.FEISHU_CLIENT_SECRET:
+            feishu_oauth = None
+        else:
+            feishu_oauth = FeishuOAuth(
+                client_id=dify_config.FEISHU_CLIENT_ID,
+                client_secret=dify_config.FEISHU_CLIENT_SECRET,
+                redirect_uri=dify_config.CONSOLE_API_URL + "/console/api/oauth/authorize/feishu",
+            )
+        # ----extend_end----
 
-        OAUTH_PROVIDERS = {"github": github_oauth, "google": google_oauth}
+        OAUTH_PROVIDERS = {"github": github_oauth, "google": google_oauth,
+                           "feishu": feishu_oauth}  # extend , "feishu": feishu_oauth
         return OAUTH_PROVIDERS
 
 

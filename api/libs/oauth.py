@@ -131,3 +131,48 @@ class GoogleOAuth(OAuth):
 
     def _transform_user_info(self, raw_info: dict) -> OAuthUserInfo:
         return OAuthUserInfo(id=str(raw_info["sub"]), name="", email=raw_info["email"])
+
+# ----extend_start---- 飞书单点登录
+class FeishuOAuth(OAuth):
+    _AUTH_URL = "https://open.feishu.cn/open-apis/authen/v1/index"
+    _TOKEN_URL = "https://open.feishu.cn/open-apis/authen/v1/access_token"
+    _USER_INFO_URL = "https://open.feishu.cn/open-apis/authen/v1/user_info"
+
+    def get_authorization_url(self, invite_token: Optional[str] = None):
+        params = {
+            "app_id": self.client_id,
+            "redirect_uri": self.redirect_uri,
+        }
+        if invite_token:
+            params["state"] = invite_token
+        return f"{self._AUTH_URL}?{urllib.parse.urlencode(params)}"
+
+    def get_access_token(self, code: str):
+        url = self._TOKEN_URL
+        headers = {"Content-Type": "application/json"}
+        data = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "app_id": self.client_id,
+            "app_secret": self.client_secret,
+        }
+        response = requests.post(url, json=data, headers=headers)
+        response_json = response.json()
+        access_token = response_json.get("data", {}).get("access_token")
+        if not access_token:
+            raise ValueError(f"Error in Feishu OAuth: {response_json}")
+        return access_token
+
+    def get_raw_user_info(self, token: str):
+        headers = {"Authorization": f"Bearer {token}"}
+        response = requests.get(self._USER_INFO_URL, headers=headers)
+        response.raise_for_status()
+        return response.json().get("data", {})
+
+    def _transform_user_info(self, raw_info: dict) -> OAuthUserInfo:
+        return OAuthUserInfo(
+            id=raw_info.get("open_id", ""),
+            name=raw_info.get("name", ""),
+            email=raw_info.get("email", "")
+        )
+# ----extend_end----
