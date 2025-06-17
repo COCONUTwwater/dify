@@ -3,7 +3,7 @@ from datetime import UTC, datetime, timedelta
 
 from flask import request
 from flask_restful import Resource
-from werkzeug.exceptions import NotFound, Unauthorized
+from werkzeug.exceptions import NotFound, Unauthorized, Forbidden
 
 from configs import dify_config
 from controllers.web import api
@@ -68,15 +68,18 @@ class PassportResource(Resource):
                 db.session.add(end_user)
                 db.session.commit()
         else:
-            end_user = EndUser(
-                tenant_id=app_model.tenant_id,
-                app_id=app_model.id,
-                type="browser",
-                is_anonymous=True,
-                session_id=generate_session_id(),
-            )
-            db.session.add(end_user)
-            db.session.commit()
+            # ----extend start----
+            raise Forbidden("please login")
+            # end_user = EndUser(
+            #     tenant_id=app_model.tenant_id,
+            #     app_id=app_model.id,
+            #     type="browser",
+            #     is_anonymous=True,
+            #     session_id=generate_session_id(),
+            # )
+            # db.session.add(end_user)
+            # db.session.commit()
+            # ----extend end----
 
         payload = {
             "iss": site.app_id,
