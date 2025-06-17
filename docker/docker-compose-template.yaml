@@ -69,7 +69,7 @@ services:
 
   # Frontend web application.
   web:
-    image: langgenius/dify-web:1.4.3
+    image: coconutwater1/dify_web_coconut:1.4.3
     restart: always
     environment:
       CONSOLE_API_URL: ${CONSOLE_API_URL:-}
@@ -91,13 +91,6 @@ services:
       ENABLE_WEBSITE_JINAREADER: ${ENABLE_WEBSITE_JINAREADER:-true}
       ENABLE_WEBSITE_FIRECRAWL: ${ENABLE_WEBSITE_FIRECRAWL:-true}
       ENABLE_WEBSITE_WATERCRAWL: ${ENABLE_WEBSITE_WATERCRAWL:-true}
-    # ----extend start----
-    volumes:
-      - ./volumes/extend/web/assets_feishu.svg:/app/web/app/signin/assets/feishu.svg
-      - ./volumes/extend/web/components_social-auth.tsx:/app/web/app/signin/components/social-auth.tsx
-      - ./volumes/extend/web/page.module.css:/app/web/app/signin/page.module.css
-      - ./volumes/extend/web/i18n_zh-Hans_login.ts:/app/web/i18n/zh-Hans/login.ts
-    # ----extend end----
   # The postgres database.
   db:
     image: postgres:15-alpine
