@@ -72,7 +72,7 @@ export default function SocialAuth(props: SocialAuthProps) {
                 'w-5 h-5 mr-2',
               )
             } />
-            <span className="truncate">{t('login.withFeishu')}</span>
+            <span className="truncate">{t('login.withFeiShu')}</span>
           </>
         </Button>
       </a>

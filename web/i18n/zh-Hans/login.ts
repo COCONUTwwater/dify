@@ -28,6 +28,7 @@ const translation = {
   sendUsMail: '发封邮件介绍你自己，我们会尽快处理。',
   acceptPP: '我已阅读并接受隐私政策',
   reset: '请运行以下命令重置密码',
+  withFeiShu: '使用 飞书 登录',
   withGitHub: '使用 GitHub 登录',
   withGoogle: '使用 Google 登录',
   withSSO: '使用 SSO 登录',
