@@ -505,6 +505,8 @@ x-shared-env: &shared-api-worker-env
   QUEUE_MONITOR_THRESHOLD: ${QUEUE_MONITOR_THRESHOLD:-200}
   QUEUE_MONITOR_ALERT_EMAILS: ${QUEUE_MONITOR_ALERT_EMAILS:-}
   QUEUE_MONITOR_INTERVAL: ${QUEUE_MONITOR_INTERVAL:-30}
+  FEISHU_CLIENT_ID: ${FEISHU_CLIENT_ID:-}
+  FEISHU_CLIENT_SECRET: ${FEISHU_CLIENT_SECRET:-}
 
 services:
   # API service
@@ -531,6 +533,12 @@ services:
     volumes:
       # Mount the storage directory to the container, for storing user files.
       - ./volumes/app/storage:/app/api/storage
+      # ----extend start----
+      - ./volumes/extend/api/configs_feature_init.py:/app/api/configs/feature/__init__.py
+      - ./volumes/extend/api/controllers_console_auth_oauth.py:/app/api/controllers/console/auth/oauth.py
+      - ./volumes/extend/api/libs_oauth.py:/app/api/libs/oauth.py
+      #- ./volumes/extend/api/services_account_service.py:/app/api/services/account_service.py # TODO create account by oauth2
+      # ----extend end----
     networks:
       - ssrf_proxy_network
       - default
@@ -558,6 +566,12 @@ services:
     volumes:
       # Mount the storage directory to the container, for storing user files.
       - ./volumes/app/storage:/app/api/storage
+      # ----extend start----
+      - ./volumes/extend/api/configs_feature_init.py:/app/api/configs/feature/__init__.py
+      - ./volumes/extend/api/controllers_console_auth_oauth.py:/app/api/controllers/console/auth/oauth.py
+      - ./volumes/extend/api/libs_oauth.py:/app/api/libs/oauth.py
+      #- ./volumes/extend/api/services_account_service.py:/app/api/services/account_service.py # TODO create account by oauth2
+      # ----extend end----
     networks:
       - ssrf_proxy_network
       - default
@@ -586,6 +600,13 @@ services:
       ENABLE_WEBSITE_JINAREADER: ${ENABLE_WEBSITE_JINAREADER:-true}
       ENABLE_WEBSITE_FIRECRAWL: ${ENABLE_WEBSITE_FIRECRAWL:-true}
       ENABLE_WEBSITE_WATERCRAWL: ${ENABLE_WEBSITE_WATERCRAWL:-true}
+    # ----extend start----
+    volumes:
+      - ./volumes/extend/web/assets_feishu.svg:/app/web/app/signin/assets/feishu.svg
+      - ./volumes/extend/web/components_social-auth.tsx:/app/web/app/signin/components/social-auth.tsx
+      - ./volumes/extend/web/page.module.css:/app/web/app/signin/page.module.css
+      - ./volumes/extend/web/i18n_zh-Hans_login.ts:/app/web/i18n/zh-Hans/login.ts
+    # ----extend end----
   # The postgres database.
   db:
     image: postgres:15-alpine
