@@ -100,9 +100,11 @@ const Header = () => {
         !isMobile && (
           <div className='absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center'>
             {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
-            {!isCurrentWorkspaceDatasetOperator && <AppNav />}
+            {/* extend start */}
+            {!isCurrentWorkspaceDatasetOperator && (isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <AppNav />}
             {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}
-            {!isCurrentWorkspaceDatasetOperator && <ToolsNav className={navClassName} />}
+            {!isCurrentWorkspaceDatasetOperator && (isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <ToolsNav className={navClassName} />}
+            {/* extend end */}
           </div>
         )
       }
@@ -117,9 +119,11 @@ const Header = () => {
         (isMobile && isShowNavMenu) && (
           <div className='flex w-full flex-col gap-y-1 p-2'>
             {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
-            {!isCurrentWorkspaceDatasetOperator && <AppNav />}
+            {/* extend start */}
+            {!isCurrentWorkspaceDatasetOperator && (isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <AppNav />}
             {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}
-            {!isCurrentWorkspaceDatasetOperator && <ToolsNav className={navClassName} />}
+            {!isCurrentWorkspaceDatasetOperator && (isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <ToolsNav className={navClassName} />}
+            {/* extend end */}
           </div>
         )
       }
