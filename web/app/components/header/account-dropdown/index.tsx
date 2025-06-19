@@ -45,7 +45,7 @@ export default function AppSelector() {
 
   const { t } = useTranslation()
   const docLink = useDocLink()
-  const { userProfile, langeniusVersionInfo, isCurrentWorkspaceOwner } = useAppContext()
+  const { userProfile, langeniusVersionInfo, isCurrentWorkspaceOwner, isCurrentWorkspaceEditor, isCurrentWorkspaceDatasetOperator } = useAppContext()
   const { isEducationAccount } = useProviderContext()
   const { setShowAccountSettingModal } = useModalContext()
 
@@ -104,6 +104,7 @@ export default function AppSelector() {
                       <Avatar avatar={userProfile.avatar_url} name={userProfile.name} size={36} className='mr-3' />
                     </div>
                   </MenuItem>
+                  {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && (
                   <div className="px-1 py-1">
                     <MenuItem>
                       <Link
@@ -126,7 +127,8 @@ export default function AppSelector() {
                       </div>
                     </MenuItem>
                   </div>
-                  {!systemFeatures.branding.enabled && <>
+                  )}
+                  {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && !systemFeatures.branding.enabled && <>
                     <div className='p-1'>
                       <MenuItem>
                         <Link
