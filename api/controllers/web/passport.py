@@ -3,7 +3,7 @@ from datetime import UTC, datetime, timedelta
 
 from flask import request
 from flask_restful import Resource
-from werkzeug.exceptions import NotFound, Unauthorized, Forbidden
+from werkzeug.exceptions import Forbidden, NotFound, Unauthorized
 
 from configs import dify_config
 from controllers.web import api
