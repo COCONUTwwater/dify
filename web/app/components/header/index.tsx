@@ -62,7 +62,7 @@ const Header = () => {
         {
           !isMobile
           && <div className='flex shrink-0 items-center gap-1.5 self-stretch pl-3'>
-            <Link href="/apps" className='flex h-8 shrink-0 items-center justify-center gap-2 px-0.5'>
+            <Link href="/explore/apps" className='flex h-8 shrink-0 items-center justify-center gap-2 px-0.5'>
               {systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
                 ? <img
                   src={systemFeatures.branding.workspace_logo}
@@ -111,7 +111,7 @@ const Header = () => {
       <div className='flex shrink-0 items-center pr-3'>
         <EnvNav />
         <div className='mr-2'>
-          <PluginsNav />
+          {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <PluginsNav />}
         </div>
         <AccountDropdown />
       </div>
