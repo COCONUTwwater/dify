@@ -42,8 +42,8 @@ def admin_required(view):
 
 
 class InsertExploreAppListApi(Resource):
-    @only_edition_cloud
-    @admin_required
+    # @only_edition_cloud
+    # @admin_required
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument("app_id", type=str, required=True, nullable=False, location="json")
@@ -113,8 +113,8 @@ class InsertExploreAppListApi(Resource):
 
 
 class InsertExploreAppApi(Resource):
-    @only_edition_cloud
-    @admin_required
+    # @only_edition_cloud
+    # @admin_required
     def delete(self, app_id):
         with Session(db.engine) as session:
             recommended_app = session.execute(
