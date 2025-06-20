@@ -8,7 +8,6 @@ import { useDebounceFn } from 'ahooks'
 import s from './style.module.css'
 import cn from '@/utils/classnames'
 import ExploreContext from '@/context/explore-context'
-import { useAppContext } from '@/context/app-context' // extend 引入用户信息
 import type { App } from '@/models/explore'
 import Category from '@/app/components/explore/category'
 import AppCard from '@/app/components/explore/app-card'
@@ -38,7 +37,6 @@ const Apps = ({
 }: AppsProps) => {
   const { t } = useTranslation()
   const { hasEditPermission } = useContext(ExploreContext)
-  const { isCurrentWorkspaceEditor, isCurrentWorkspaceDatasetOperator } = useAppContext()
   const allCategoriesEn = t('explore.apps.allCategories', { lng: 'en' })
 
   const [keywords, setKeywords] = useState('')
@@ -173,50 +171,50 @@ const Apps = ({
         <div className='text-sm text-text-tertiary'>{t('explore.apps.description')}</div>
       </div>
 
-      {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && (
+      <div className={cn(
+        'mt-6 flex items-center justify-between px-12',
+      )}>
         <>
-          <div className={cn(
-            'mt-6 flex items-center justify-between px-12',
-          )}>
-              <Category
-                list={categories}
-                value={currCategory}
-                onChange={setCurrCategory}
-                allCategoriesEn={allCategoriesEn}
-              />
-            <Input
-              showLeftIcon
-              showClearIcon
-              wrapperClassName='w-[200px]'
-              value={keywords}
-              onChange={e => handleKeywordsChange(e.target.value)}
-              onClear={() => handleKeywordsChange('')}
-            />
-          </div>
-          <div className={cn(
-            'relative mt-4 flex flex-1 shrink-0 grow flex-col overflow-auto pb-6',
-          )}>
-            <nav
-              className={cn(
-                s.appList,
-                'grid shrink-0 content-start gap-4 px-6 sm:px-12',
-              )}>
-              {searchFilteredList.map(app => (
-                <AppCard
-                  key={app.app_id}
-                  isExplore
-                  app={app}
-                  canCreate={hasEditPermission}
-                  onCreate={() => {
-                    setCurrApp(app)
-                    setIsShowCreateModal(true)
-                  }}
-                />
-              ))}
-            </nav>
-          </div>
+          <Category
+            list={categories}
+            value={currCategory}
+            onChange={setCurrCategory}
+            allCategoriesEn={allCategoriesEn}
+          />
         </>
-      )}
+        <Input
+          showLeftIcon
+          showClearIcon
+          wrapperClassName='w-[200px]'
+          value={keywords}
+          onChange={e => handleKeywordsChange(e.target.value)}
+          onClear={() => handleKeywordsChange('')}
+        />
+
+      </div>
+
+      <div className={cn(
+        'relative mt-4 flex flex-1 shrink-0 grow flex-col overflow-auto pb-6',
+      )}>
+        <nav
+          className={cn(
+            s.appList,
+            'grid shrink-0 content-start gap-4 px-6 sm:px-12',
+          )}>
+          {searchFilteredList.map(app => (
+            <AppCard
+              key={app.app_id}
+              isExplore
+              app={app}
+              canCreate={hasEditPermission}
+              onCreate={() => {
+                setCurrApp(app)
+                setIsShowCreateModal(true)
+              }}
+            />
+          ))}
+        </nav>
+      </div>
       {isShowCreateModal && (
         <CreateAppModal
           appIconType={currApp?.app.icon_type || 'emoji'}
